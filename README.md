@@ -29,7 +29,7 @@
 | Recharts       | Charting library               |
 | Multer & csv-parser | File parsing (backend)     |
 | Netlify        | Frontend hosting               |
-| Render / Railway / Cyclic | Backend hosting      |
+| Render         | Backend hosting      |
 
 ---
 
