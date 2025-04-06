@@ -1,25 +1,19 @@
 import React from 'react';
 
 const DataTable = ({ data }) => {
-  if (!data || data.length === 0) return <p>No data to display.</p>;
-
   const headers = Object.keys(data[0]);
 
   return (
-    <table border="1" style={{ marginTop: '20px', marginLeft: 'auto', marginRight: 'auto' }}>
+    <table>
       <thead>
         <tr>
-          {headers.map((key) => (
-            <th key={key}>{key}</th>
-          ))}
+          {headers.map((h) => <th key={h}>{h}</th>)}
         </tr>
       </thead>
       <tbody>
         {data.map((row, idx) => (
           <tr key={idx}>
-            {headers.map((key) => (
-              <td key={key}>{row[key]}</td>
-            ))}
+            {headers.map((h) => <td key={h}>{row[h]}</td>)}
           </tr>
         ))}
       </tbody>
