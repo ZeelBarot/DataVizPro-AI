@@ -1,20 +1,27 @@
 const csv = require('csvtojson');
 const path = require('path');
+const fs = require('fs');
 
 const uploadFile = async (req, res) => {
   try {
     const file = req.file;
-    if (!file) {
-      return res.status(400).json({ error: 'No file uploaded' });
+    const ext = path.extname(file.originalname);
+
+    let jsonArray;
+
+    if (ext === '.csv') {
+      jsonArray = await csv().fromFile(file.path);
+    } else if (ext === '.json') {
+      const data = fs.readFileSync(file.path, 'utf8');
+      jsonArray = JSON.parse(data);
+    } else {
+      return res.status(400).json({ error: 'Unsupported file type' });
     }
 
-    const filePath = path.join(__dirname, '../uploads/', file.filename);
-
-    const jsonArray = await csv().fromFile(filePath); // Convert CSV to JSON
-    res.status(200).json(jsonArray); // ✅ Send parsed JSON data to frontend
-  } catch (error) {
-    console.error('Error in uploadFile:', error);
-    res.status(500).json({ error: 'Server error while parsing file' });
+    res.status(200).json(jsonArray);
+  } catch (err) {
+    console.error('Error parsing file:', err);
+    res.status(500).json({ error: 'Failed to parse file' });
   }
 };
 
